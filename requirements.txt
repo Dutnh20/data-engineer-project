@@ -1,0 +1,2 @@
+# Cài trong Python 3.12 / venv, hoặc dùng Dockerfile đã kèm.
+-r requirements.lock

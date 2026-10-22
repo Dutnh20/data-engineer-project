@@ -1,0 +1,12 @@
+{
+  "seed": 42,
+  "customers": 5000,
+  "products": 2000,
+  "orders": 100000,
+  "target_gb": 0.1,
+  "batch_orders": 25000,
+  "dimension_batch": 20000,
+  "schema_change_after_order": 50000,
+  "compression": "NONE",
+  "customer_change_fraction": 0.05
+}

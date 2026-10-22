@@ -1,0 +1,21 @@
+{
+  "seed": 42,
+  "customers": 2000,
+  "products": 1000,
+  "orders": 12000,
+  "target_gb": null,
+  "batch_orders": 1000,
+  "dimension_batch": 20000,
+  "start_ts": "2025-01-01T00:00:00+00:00",
+  "history_days": 180,
+  "order_interval_seconds": 1.0,
+  "schema_change_after_order": 6000,
+  "offline_duplicate_fraction": 0.02,
+  "stream_duplicate_fraction": 0.015,
+  "late_mobile_fraction": 0.15,
+  "late_min_seconds": 300,
+  "late_max_seconds": 600,
+  "compression": "zstd",
+  "min_free_gb": 0.25,
+  "customer_change_fraction": 0.05
+}

@@ -1,0 +1,184 @@
+{
+  "status": "complete",
+  "data_origin": "100_percent_synthetic",
+  "generator_version": "1.1.0",
+  "config_fingerprint": "808b27567ae077c17b6f98382ffc6903a5bc73507ab76d2bdcf615fccfc84271",
+  "tables": {
+    "customer_changes": {
+      "rows": 2150,
+      "physical_bytes": 27979,
+      "arrow_logical_bytes": 226084,
+      "files": 1
+    },
+    "customers": {
+      "rows": 2000,
+      "physical_bytes": 16312,
+      "arrow_logical_bytes": 158468,
+      "files": 1
+    },
+    "order_items": {
+      "rows": 30591,
+      "physical_bytes": 498222,
+      "arrow_logical_bytes": 1957824,
+      "files": 12
+    },
+    "orders": {
+      "rows": 12000,
+      "physical_bytes": 197841,
+      "arrow_logical_bytes": 771913,
+      "files": 12
+    },
+    "payments": {
+      "rows": 13523,
+      "physical_bytes": 223764,
+      "arrow_logical_bytes": 1093913,
+      "files": 12
+    },
+    "products": {
+      "rows": 1000,
+      "physical_bytes": 17516,
+      "arrow_logical_bytes": 148786,
+      "files": 1
+    }
+  },
+  "orders_generated": 12000,
+  "physical_source_bytes": 981634,
+  "physical_source_gb": 0.000981634,
+  "target_bytes": null,
+  "target_reached": false,
+  "rubric_100gb_met": false,
+  "size_definition": "Sum of actual committed Parquet bytes in five core tables plus customer_changes; excludes reports, streams, copies in MinIO/bronze, and padding.",
+  "customer_history": {
+    "source_table": "customer_changes",
+    "baseline": "customers is the signup snapshot, not the latest state",
+    "changed_customer_fraction": 0.05,
+    "minimum_order_history_seconds": 11999.0,
+    "first_change_offset_seconds": 2999.75,
+    "second_change_offset_seconds": 7199.4,
+    "note": "Initial image per customer; selected customers change segment once, every second selected customer changes twice. Build SCD2 downstream using effective_ts."
+  },
+  "shipping_city_counts": {
+    "Da Nang": 1274,
+    "Ha Noi": 1133,
+    "Ho Chi Minh": 9593
+  },
+  "hcm_order_fraction": 0.7994166666666667,
+  "product_electronics_fraction": 0.75,
+  "offline_duplicates": {
+    "clean_rows": 29980,
+    "extra_copies": 611,
+    "total_rows": 30591,
+    "fraction_of_final_rows": 0.019973194730476283,
+    "configured_fraction_of_final_rows": 0.02,
+    "key": "order_item_id",
+    "changed_column": "created_ts (+1 second)"
+  },
+  "schema_evolution": {
+    "table": "payments",
+    "last_v1_order_id": 6000,
+    "first_v2_order_id": 6001,
+    "boundary_semantics": "source generation order, not historical event time",
+    "before": [
+      {
+        "name": "payment_id",
+        "type": "int64",
+        "nullable": false
+      },
+      {
+        "name": "order_id",
+        "type": "int64",
+        "nullable": false
+      },
+      {
+        "name": "attempt_no",
+        "type": "int64",
+        "nullable": false
+      },
+      {
+        "name": "payment_ts",
+        "type": "timestamp[us, tz=UTC]",
+        "nullable": false
+      },
+      {
+        "name": "method",
+        "type": "string",
+        "nullable": false
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "nullable": false
+      },
+      {
+        "name": "amount",
+        "type": "int64",
+        "nullable": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "nullable": false
+      }
+    ],
+    "after": [
+      {
+        "name": "payment_id",
+        "type": "int64",
+        "nullable": false
+      },
+      {
+        "name": "order_id",
+        "type": "int64",
+        "nullable": false
+      },
+      {
+        "name": "attempt_no",
+        "type": "int64",
+        "nullable": false
+      },
+      {
+        "name": "payment_ts",
+        "type": "timestamp[us, tz=UTC]",
+        "nullable": false
+      },
+      {
+        "name": "method",
+        "type": "string",
+        "nullable": false
+      },
+      {
+        "name": "provider",
+        "type": "string",
+        "nullable": false
+      },
+      {
+        "name": "amount",
+        "type": "int64",
+        "nullable": false
+      },
+      {
+        "name": "status",
+        "type": "string",
+        "nullable": false
+      },
+      {
+        "name": "failure_reason",
+        "type": "string",
+        "nullable": true
+      }
+    ],
+    "observed_versions": [
+      1,
+      2
+    ]
+  },
+  "declared_primary_key_cardinality": {
+    "customers.customer_id": 1.0,
+    "customer_changes.change_id": 1.0,
+    "products.product_id": 1.0,
+    "orders.order_id": 1.0,
+    "payments.payment_id": 1.0,
+    "order_items.order_item_id": 0.9800268052695237
+  },
+  "validation_note": "These are generator counters; run validate for independent file-based checks and measured cardinality."
+}

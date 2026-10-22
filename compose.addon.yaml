@@ -1,0 +1,19 @@
+# Reuse MinIO and Kafka from the earlier edai-foundation project.
+# Pass that project's .env with docker compose --env-file ...
+name: edai-generator-addon
+services:
+  generator:
+    image: edai-synthetic-generator:1.1.0
+    build: .
+    volumes:
+      - ./output:/data
+    environment:
+      S3_ENDPOINT_URL: http://minio:9000
+      AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER:?Pass the foundation .env file}
+      AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:?Pass the foundation .env file}
+      AWS_EC2_METADATA_DISABLED: "true"
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+networks:
+  default:
+    external: true
+    name: ${FOUNDATION_NETWORK:-edai-foundation_default}

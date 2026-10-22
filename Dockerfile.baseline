@@ -1,0 +1,14 @@
+FROM python:3.12.12-bookworm
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONUTF8=1
+WORKDIR /app
+COPY requirements.lock .
+RUN pip install --no-cache-dir --only-binary=:all: -r requirements.lock
+RUN useradd --uid 10001 --create-home generator && mkdir /data && chown generator:generator /data
+COPY --chown=generator:generator edai_generator /app/edai_generator
+COPY --chown=generator:generator pipelines /app/pipelines
+COPY --chown=generator:generator configs /app/configs
+COPY --chown=generator:generator tests /app/tests
+COPY --chown=generator:generator generate_data.py /app/generate_data.py
+USER generator
+ENTRYPOINT ["python", "-m", "edai_generator"]
+CMD ["--help"]

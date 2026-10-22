@@ -1,0 +1,21 @@
+[1/3] Sinh các bảng nguồn thành file Parquet...
+{"status": "complete", "orders": 200000, "physical_gb": 0.016746269, "rubric_100gb_met": false}
+[2/3] Kiểm tra độc lập dữ liệu đầu ra...
+[3/3] Bỏ qua streaming theo --stream-orders 0.
+{
+  "hoan_thanh": true,
+  "thu_muc": "/workspace/scratch/08040969f14b/generator_v11_checks/ml_history",
+  "so_dong_moi_bang": {
+    "customers": 20000,
+    "customer_changes": 21500,
+    "products": 10000,
+    "orders": 200000,
+    "order_items": 510418,
+    "payments": 225533
+  },
+  "kiem_tra_du_lieu": true,
+  "so_ngay_lich_su_don_hang": 347.2204861111111,
+  "dung_luong_parquet_gb": 0.016746269,
+  "da_du_100gb": false,
+  "da_gui_kafka": false
+}

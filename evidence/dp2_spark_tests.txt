@@ -1,0 +1,72 @@
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/10/21 23:08:25 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/10/21 23:08:25 WARN MacAddressUtil: Failed to find a usable hardware address from the network interfaces; using random bytes: 75:48:43:87:12:bc:26:7d
+[DP2] Processing customers
+[Stage 0:>                                                          (0 + 1) / 1]                                                                                /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 45620), raddr=('127.0.0.1', 41459)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Processing products
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 57790), raddr=('127.0.0.1', 46377)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Processing orders
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 51904), raddr=('127.0.0.1', 40417)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Processing order_items
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 56112), raddr=('127.0.0.1', 33183)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 32900), raddr=('127.0.0.1', 39119)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Processing payments
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 33832), raddr=('127.0.0.1', 36549)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Processing customer_changes
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 40792), raddr=('127.0.0.1', 34111)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Checking foreign keys, amounts and timestamps
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 42334), raddr=('127.0.0.1', 33507)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Building and checking customer history (SCD2)
+test_bad_quantity_quarantined_and_not_published (test_silver.SilverTests.test_bad_quantity_quarantined_and_not_published) ... [DP2] Processing customers
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 33534), raddr=('127.0.0.1', 38777)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Processing products
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 59906), raddr=('127.0.0.1', 36233)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Processing orders
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 40038), raddr=('127.0.0.1', 42967)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+[DP2] Processing order_items
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 46712), raddr=('127.0.0.1', 37997)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+DP2 failed; local report: /workspace/scratch/08040969f14b/silver_checks/spark_run_01/bad/reports/20261021T160844Z-a3587551f40e/silver_report.json
+ok
+test_changed_output_is_detected_on_rerun (test_silver.SilverTests.test_changed_output_is_detected_on_rerun) ... ok
+test_counts_dedup_schema_and_exact_amount_reconciliation (test_silver.SilverTests.test_counts_dedup_schema_and_exact_amount_reconciliation) ... ok
+test_history_half_open_boundary_and_current_uniqueness (test_silver.SilverTests.test_history_half_open_boundary_and_current_uniqueness) ... ok
+test_missing_bronze_marker_blocks_before_spark (test_silver.SilverTests.test_missing_bronze_marker_blocks_before_spark) ... DP2 failed; local report: /workspace/scratch/08040969f14b/silver_checks/spark_run_01/empty/reports/20261021T160848Z-490e5f270998/silver_report.json
+ok
+test_noop_history_update_is_removed_and_keys_are_stable (test_silver.SilverTests.test_noop_history_update_is_removed_and_keys_are_stable) ... /opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 57224), raddr=('127.0.0.1', 39269)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py:791: ResourceWarning: unclosed <socket.socket fd=7, family=2, type=1, proto=6, laddr=('127.0.0.1', 40072), raddr=('127.0.0.1', 43567)>
+  self._sock = None
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+ok
+test_rerun_does_not_recompute_or_append (test_silver.SilverTests.test_rerun_does_not_recompute_or_append) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 27.422s
+
+OK

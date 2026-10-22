@@ -1,0 +1,11 @@
+{
+  "python_syntax_files": 12,
+  "compose_yaml_files": 2,
+  "documentation_links": "passed",
+  "unit_tests_passed": 16,
+  "smoke_validation": true,
+  "ml_history_validation": true,
+  "docker_executed": false,
+  "live_kafka_minio_tested": false,
+  "generated_100gb": false
+}

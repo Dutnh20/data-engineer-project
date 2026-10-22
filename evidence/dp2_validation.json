@@ -1,0 +1,87 @@
+{
+  "verified_on_utc_date": "2026-10-21",
+  "pipeline": "DP2a Bronze to Silver",
+  "version": "1.0.0",
+  "code_sha256": "212ba37238fd572ba57e36381ac9326c09efd35f2b501b5cb19fe2b08d97de18",
+  "spark": {
+    "adaptive_enabled": "true",
+    "application_id": "local-1792598905591",
+    "master": "local[2]",
+    "shuffle_partitions": "2",
+    "version": "3.5.6"
+  },
+  "source": "configs/smoke.json; 12000 orders",
+  "tests": {
+    "passed": true,
+    "count": 7,
+    "elapsed_seconds": 27.422,
+    "engine": "real Spark 3.5.6 local[2] and real Parquet reads/writes",
+    "storage": "in-memory S3 metadata plus filesystem adapter; not live S3"
+  },
+  "rows": {
+    "stg_customer_changes": 2150,
+    "stg_customer_history": 2150,
+    "stg_customers": 2000,
+    "stg_order_items": 29980,
+    "stg_orders": 12000,
+    "stg_payments": 13523,
+    "stg_products": 1000
+  },
+  "duplicates_removed": 611,
+  "quality_checks_passed": 48,
+  "amount_reconciliation_vnd": {
+    "raw_items_amount_vnd": 483359824000,
+    "clean_items_amount_vnd": 474731499000,
+    "duplicate_amount_removed_vnd": 8628325000
+  },
+  "negative_case": "quantity=0 is written to quarantine, raises QualityError and does not create a Silver _SUCCESS.json",
+  "rerun": "Reuses published snapshot without Spark recomputation or new data files; changed output detected",
+  "scd2": "Half-open interval boundaries checked; exactly one current version per customer; no-op update removed; stable keys after repartition",
+  "dependencies": [
+    {
+      "artifact": "org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar",
+      "sha256": "53f9ae03c681a30a50aa17524bd9790ab596b28481858e54efd989a826ed3a4a",
+      "bytes": 962685,
+      "published_sha1_verified": true
+    },
+    {
+      "artifact": "com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar",
+      "sha256": "873fe7cf495126619997bec21c44de5d992544aea7e632fdc77adb1a0915bae5",
+      "bytes": 280645251,
+      "published_sha1_verified": true
+    }
+  ],
+  "jvm_dependency_check": {
+    "passed": true,
+    "spark_version": "3.5.6",
+    "hadoop_version": "3.3.4",
+    "classes_loaded": [
+      "org.apache.hadoop.fs.s3a.S3AFileSystem",
+      "com.amazonaws.services.s3.AmazonS3Client",
+      "com.amazonaws.auth.EnvironmentVariableCredentialsProvider"
+    ],
+    "live_s3_connection_tested": false
+  },
+  "image": {
+    "reference": "apache/spark:3.5.6-scala2.12-java17-python3-ubuntu",
+    "digest": "sha256:702d82ecea50c6f8344d3df753ba26f05ffd9d1d052e180fed9c3d6c04f77730",
+    "tag_metadata_verified": true,
+    "image_built_here": false
+  },
+  "static_checks": {
+    "python_syntax": "passed",
+    "compose_yaml": "parsed",
+    "compose_service_dependencies": "resolved against base file",
+    "docker_copy_sources": "present",
+    "bash_syntax": "passed"
+  },
+  "not_tested": [
+    "Docker image build",
+    "Docker master-worker cluster",
+    "S3A requests to live MinIO/Silo",
+    "100 GB run",
+    "performance comparison",
+    "Airflow orchestration"
+  ],
+  "scope": "Validated Parquet Silver snapshots, not Iceberg or complete DP2 Silver+Gold orchestration"
+}

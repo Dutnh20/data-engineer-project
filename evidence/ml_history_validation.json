@@ -1,0 +1,140 @@
+{
+  "passed": true,
+  "scope": "full_parquet_scan",
+  "config_fingerprint": "6edecded9bdb8ccf3039ddaeca2e57555445fe263bbc6c8da65acbdf42353b0f",
+  "checks": {
+    "customers_row_count_matches_manifest": true,
+    "customers_unique_primary_key": true,
+    "customers_complete_id_domain": true,
+    "customer_changes_row_count_matches_manifest": true,
+    "customer_changes_unique_primary_key": true,
+    "products_row_count_matches_manifest": true,
+    "products_unique_primary_key": true,
+    "products_complete_id_domain": true,
+    "orders_row_count_matches_manifest": true,
+    "orders_unique_primary_key": true,
+    "orders_complete_id_domain": true,
+    "order_items_row_count_matches_manifest": true,
+    "payments_row_count_matches_manifest": true,
+    "payments_unique_primary_key": true,
+    "orders_customer_fk": true,
+    "changes_customer_fk": true,
+    "changes_valid_time": true,
+    "changes_known_values": true,
+    "changes_unique_effective_time": true,
+    "changes_initial_snapshot": true,
+    "changes_one_initial_per_customer": true,
+    "changes_actual_segment_update": true,
+    "items_order_fk": true,
+    "items_product_fk": true,
+    "payments_order_fk": true,
+    "item_arithmetic": true,
+    "customer_before_order": true,
+    "payment_amount": true,
+    "duplicate_business_fields_unchanged": true,
+    "duplicate_timestamps": true,
+    "payment_schema_boundary": true,
+    "payment_failure_reason_v2": true,
+    "shipping_city_matches_customer": true,
+    "changes_count_matches_rate": true,
+    "changes_within_observed_order_history": true,
+    "order_totals_after_deduplication": true,
+    "payment_status_consistency": true,
+    "shipping_distribution_matches_manifest": true,
+    "category_skew": true,
+    "duplicate_count_matches_rate": true,
+    "duplicate_count_matches_manifest": true
+  },
+  "failures": [],
+  "checksums_verified": true,
+  "physical_source_bytes": 16746269,
+  "physical_source_gb": 0.016746269,
+  "rubric_100gb_met": false,
+  "rows": {
+    "customers": 20000,
+    "customer_changes": 21500,
+    "products": 10000,
+    "orders": 200000,
+    "order_items": 510418,
+    "payments": 225533
+  },
+  "cardinality": {
+    "customers.customer_id": {
+      "unique_values": 20000,
+      "rows": 20000,
+      "ratio": 1.0
+    },
+    "customer_changes.change_id": {
+      "unique_values": 21500,
+      "rows": 21500,
+      "ratio": 1.0
+    },
+    "products.product_id": {
+      "unique_values": 10000,
+      "rows": 10000,
+      "ratio": 1.0
+    },
+    "orders.order_id": {
+      "unique_values": 200000,
+      "rows": 200000,
+      "ratio": 1.0
+    },
+    "order_items.order_item_id": {
+      "unique_values": 500210,
+      "rows": 510418,
+      "ratio": 0.9800007053042801
+    },
+    "payments.payment_id": {
+      "unique_values": 225533,
+      "rows": 225533,
+      "ratio": 1.0
+    },
+    "orders.customer_id": {
+      "unique_values": 19879,
+      "rows": 200000,
+      "ratio": 0.099395
+    },
+    "order_items.product_id": {
+      "unique_values": 10000,
+      "rows": 510418,
+      "ratio": 0.019591785556152017
+    },
+    "payments.order_id": {
+      "unique_values": 200000,
+      "rows": 225533,
+      "ratio": 0.8867881862077833
+    }
+  },
+  "order_time_range": {
+    "start": "2024-12-31T19:00:00-05:00",
+    "end": "2025-12-14T00:17:30-05:00",
+    "span_days": 347.2204861111111
+  },
+  "customer_history": {
+    "customers_with_updates": 1000,
+    "update_rows": 1500,
+    "initial_rows": 20000
+  },
+  "shipping_city_counts": {
+    "Ho Chi Minh": 159533,
+    "Ha Noi": 19678,
+    "Da Nang": 20789
+  },
+  "category_counts": {
+    "home": 1250,
+    "electronics": 7500,
+    "fashion": 1250
+  },
+  "duplicate_extra_rows": 10208,
+  "duplicate_fraction_of_final_rows": 0.01999929469571998,
+  "schema_versions": [
+    1,
+    2
+  ],
+  "duplicate_amount_effect_vnd": {
+    "raw_item_total": 8170786576000,
+    "deduplicated_order_total": 8008621030000,
+    "overcount": 162165546000,
+    "note": "Order value, not recognized revenue; cancelled/pending orders are included."
+  }
+}

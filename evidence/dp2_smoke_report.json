@@ -1,0 +1,1082 @@
+{
+  "bronze_bucket": "bronze",
+  "bronze_run_id": "20261021T160823Z-599581db96bc",
+  "bronze_version": "bronze_test",
+  "clean_items_amount_vnd": 474731499000,
+  "duplicate_amount_removed_vnd": 8628325000,
+  "finished_at": "2026-10-21T16:08:43.587970+00:00",
+  "identity": {
+    "bronze_bucket": "bronze",
+    "bronze_version": "bronze_test",
+    "code_sha256": "212ba37238fd572ba57e36381ac9326c09efd35f2b501b5cb19fe2b08d97de18",
+    "file_index_sha256": "603d96d5fbb69732060104987d5624713fa46f6156d4195eeb21cff504ef9ae1",
+    "pipeline_version": "1.0.0",
+    "silver_version": "silver_test",
+    "source_config_sha256": "b3f8777c1599e156367fbe328d08a85785e1fe881010dd3af66af9a90820c7e3",
+    "source_fingerprint": "808b27567ae077c17b6f98382ffc6903a5bc73507ab76d2bdcf615fccfc84271",
+    "source_manifest_sha256": "12f35752fedb42dcefc82e1238ba4c2bf961b3a20839852f10d6fe418771fe29",
+    "spark_version": "3.5.6"
+  },
+  "output_inventory": [
+    {
+      "bytes": 0,
+      "etag": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customer_changes/_SUCCESS"
+    },
+    {
+      "bytes": 46873,
+      "etag": "f72d83e175244423822139937664c855f16acc04dca9ae449fc176560ada6a19",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customer_changes/part-00000-0df9b45e-94c0-48e6-bb5e-9a0034259561-c000.snappy.parquet"
+    },
+    {
+      "bytes": 0,
+      "etag": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customer_history/_SUCCESS"
+    },
+    {
+      "bytes": 188463,
+      "etag": "1cc3c5830a21acc7909c04a64377ddc4a01a3e07c5438422c3b394843e74678a",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customer_history/part-00000-2b87b99b-a07e-4088-ad9f-18bca113ca91-c000.snappy.parquet"
+    },
+    {
+      "bytes": 0,
+      "etag": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customers/_SUCCESS"
+    },
+    {
+      "bytes": 28785,
+      "etag": "b0c03897b00f56fae5561ed39d82680584f90afc1d731173b8c6ee04a903e01f",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customers/part-00000-d5db1e78-28e8-40c4-8fb6-f9f097133b8b-c000.snappy.parquet"
+    },
+    {
+      "bytes": 0,
+      "etag": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_order_items/_SUCCESS"
+    },
+    {
+      "bytes": 525955,
+      "etag": "b27a021fc0a9cb406fefaf19e921e5e672b0ca1817a49dc3a7c4bbed7378407b",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_order_items/part-00000-f09f2e07-f9e2-4d61-99a3-3ad357fb3f82-c000.snappy.parquet"
+    },
+    {
+      "bytes": 0,
+      "etag": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_orders/_SUCCESS"
+    },
+    {
+      "bytes": 121398,
+      "etag": "5779f61321e51daff4206aedc057c0889828eb12168fbc9ec4a376043fcba840",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_orders/part-00000-69760bda-4d4f-4808-9222-7a815cfaedf9-c000.snappy.parquet"
+    },
+    {
+      "bytes": 119857,
+      "etag": "6f48d6397a6b097ba97dbd7748a94c9e8d4014742f549adf1f5c5e0a9e5fac2f",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_orders/part-00001-69760bda-4d4f-4808-9222-7a815cfaedf9-c000.snappy.parquet"
+    },
+    {
+      "bytes": 0,
+      "etag": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_payments/_SUCCESS"
+    },
+    {
+      "bytes": 139850,
+      "etag": "cd7fbcd24354540e793c593cbf1261932d693383f7e904ae6ec19f66a1159463",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_payments/part-00000-1ceae3b7-0226-4c6a-a721-09fe1b916387-c000.snappy.parquet"
+    },
+    {
+      "bytes": 137878,
+      "etag": "370197ea50360e40862eb538e1dd79fa020c75f3124432a1c80856501170154f",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_payments/part-00001-1ceae3b7-0226-4c6a-a721-09fe1b916387-c000.snappy.parquet"
+    },
+    {
+      "bytes": 0,
+      "etag": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_products/_SUCCESS"
+    },
+    {
+      "bytes": 30904,
+      "etag": "2a6745a0d1eb6abf275404d7c50468d54b5441a335e607c79e5ccdc1171c5226",
+      "key": "silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_products/part-00000-ca736a31-debd-4fde-8c9a-1d3b281910d7-c000.snappy.parquet"
+    }
+  ],
+  "passed": true,
+  "pipeline": "dp2a_bronze_to_silver",
+  "pipeline_version": "1.0.0",
+  "quality_checks": [
+    {
+      "check": "customers_input_rows",
+      "detail": {
+        "actual": 2000,
+        "expected": 2000
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "customers_row_rules",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "customers_duplicate_primary_key",
+      "passed": true
+    },
+    {
+      "check": "customers_output_rows",
+      "detail": {
+        "actual": 2000,
+        "expected": 2000
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "customers_output_unique",
+      "passed": true
+    },
+    {
+      "check": "products_input_rows",
+      "detail": {
+        "actual": 1000,
+        "expected": 1000
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "products_row_rules",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "products_duplicate_primary_key",
+      "passed": true
+    },
+    {
+      "check": "products_output_rows",
+      "detail": {
+        "actual": 1000,
+        "expected": 1000
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "products_output_unique",
+      "passed": true
+    },
+    {
+      "check": "orders_input_rows",
+      "detail": {
+        "actual": 12000,
+        "expected": 12000
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "orders_row_rules",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "orders_duplicate_primary_key",
+      "passed": true
+    },
+    {
+      "check": "orders_output_rows",
+      "detail": {
+        "actual": 12000,
+        "expected": 12000
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "orders_output_unique",
+      "passed": true
+    },
+    {
+      "check": "order_items_input_rows",
+      "detail": {
+        "actual": 30591,
+        "expected": 30591
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "order_items_row_rules",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "order_items_conflicting_retry",
+      "passed": true
+    },
+    {
+      "check": "order_items_output_rows",
+      "detail": {
+        "actual": 29980,
+        "expected": 29980
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "order_items_output_unique",
+      "passed": true
+    },
+    {
+      "check": "payments_input_rows",
+      "detail": {
+        "actual": 13523,
+        "expected": 13523
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "payments_row_rules",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "payments_duplicate_primary_key",
+      "passed": true
+    },
+    {
+      "check": "payments_output_rows",
+      "detail": {
+        "actual": 13523,
+        "expected": 13523
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "payments_output_unique",
+      "passed": true
+    },
+    {
+      "check": "customer_changes_input_rows",
+      "detail": {
+        "actual": 2150,
+        "expected": 2150
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "customer_changes_row_rules",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "customer_changes_duplicate_primary_key",
+      "passed": true
+    },
+    {
+      "check": "customer_changes_output_rows",
+      "detail": {
+        "actual": 2150,
+        "expected": 2150
+      },
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "customer_changes_output_unique",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "orders_customer_fk",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "items_order_fk",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "items_product_fk",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "payments_order_fk",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "changes_customer_fk",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "orders_before_signup",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "orders_items_amount",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "payments_amount_or_time",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "items_before_order",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "items_product_price_or_time",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "changes_before_signup",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "changes_ambiguous_timestamp",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "customer_history_baseline",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "history_unique_sk",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "history_valid_intervals",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "history_one_current",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "history_no_gaps_or_overlap",
+      "passed": true
+    },
+    {
+      "bad_rows": 0,
+      "check": "orders_exactly_one_history_version",
+      "passed": true
+    }
+  ],
+  "raw_items_amount_vnd": 483359824000,
+  "run_id": "20261021T160823Z-85319e4fb94b",
+  "silver_bucket": "silver",
+  "silver_version": "silver_test",
+  "spark": {
+    "adaptive_enabled": "true",
+    "application_id": "local-1792598905591",
+    "master": "local[2]",
+    "shuffle_partitions": "2",
+    "version": "3.5.6"
+  },
+  "started_at": "2026-10-21T16:08:23.363983+00:00",
+  "status": "published",
+  "tables": {
+    "stg_customer_changes": {
+      "columns": [
+        "change_id",
+        "customer_id",
+        "customer_name",
+        "city",
+        "segment",
+        "device_type",
+        "change_type",
+        "effective_ts",
+        "source_updated_ts",
+        "_source_file",
+        "_dataset_version",
+        "_pipeline_run_id",
+        "_ingested_at"
+      ],
+      "input_rows": 2150,
+      "path": "file:///workspace/scratch/08040969f14b/silver_checks/spark_run_01/good/silver/silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customer_changes",
+      "removed_duplicates": 0,
+      "rows": 2150,
+      "schema": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "change_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "customer_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "customer_name",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "city",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "segment",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "device_type",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "change_type",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "effective_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "source_updated_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "_source_file",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_dataset_version",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_pipeline_run_id",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_ingested_at",
+            "nullable": true,
+            "type": "timestamp"
+          }
+        ],
+        "type": "struct"
+      }
+    },
+    "stg_customer_history": {
+      "columns": [
+        "customer_sk",
+        "customer_id",
+        "customer_name",
+        "city",
+        "segment",
+        "device_type",
+        "valid_from_ts",
+        "valid_to_ts",
+        "is_current",
+        "change_id",
+        "_dataset_version",
+        "_source_file",
+        "_pipeline_run_id",
+        "_ingested_at"
+      ],
+      "path": "file:///workspace/scratch/08040969f14b/silver_checks/spark_run_01/good/silver/silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customer_history",
+      "rows": 2150,
+      "schema": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "customer_sk",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "customer_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "customer_name",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "city",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "segment",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "device_type",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "valid_from_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "valid_to_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "is_current",
+            "nullable": true,
+            "type": "boolean"
+          },
+          {
+            "metadata": {},
+            "name": "change_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "_dataset_version",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_source_file",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_pipeline_run_id",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_ingested_at",
+            "nullable": true,
+            "type": "timestamp"
+          }
+        ],
+        "type": "struct"
+      }
+    },
+    "stg_customers": {
+      "columns": [
+        "customer_id",
+        "customer_name",
+        "signup_ts",
+        "city",
+        "segment",
+        "device_type",
+        "_source_file",
+        "_dataset_version",
+        "_pipeline_run_id",
+        "_ingested_at"
+      ],
+      "input_rows": 2000,
+      "path": "file:///workspace/scratch/08040969f14b/silver_checks/spark_run_01/good/silver/silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_customers",
+      "removed_duplicates": 0,
+      "rows": 2000,
+      "schema": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "customer_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "customer_name",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "signup_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "city",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "segment",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "device_type",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_source_file",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_dataset_version",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_pipeline_run_id",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_ingested_at",
+            "nullable": true,
+            "type": "timestamp"
+          }
+        ],
+        "type": "struct"
+      }
+    },
+    "stg_order_items": {
+      "columns": [
+        "order_item_id",
+        "order_id",
+        "product_id",
+        "quantity",
+        "unit_price",
+        "discount_amount",
+        "line_amount",
+        "created_ts",
+        "_source_file",
+        "_dataset_version",
+        "_pipeline_run_id",
+        "_ingested_at"
+      ],
+      "input_rows": 30591,
+      "path": "file:///workspace/scratch/08040969f14b/silver_checks/spark_run_01/good/silver/silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_order_items",
+      "removed_duplicates": 611,
+      "rows": 29980,
+      "schema": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "order_item_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "order_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "product_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "quantity",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "unit_price",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "discount_amount",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "line_amount",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "created_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "_source_file",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_dataset_version",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_pipeline_run_id",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_ingested_at",
+            "nullable": true,
+            "type": "timestamp"
+          }
+        ],
+        "type": "struct"
+      }
+    },
+    "stg_orders": {
+      "columns": [
+        "order_id",
+        "customer_id",
+        "order_ts",
+        "status",
+        "shipping_city",
+        "coupon_code",
+        "total_amount",
+        "_source_file",
+        "_dataset_version",
+        "_pipeline_run_id",
+        "_ingested_at"
+      ],
+      "input_rows": 12000,
+      "path": "file:///workspace/scratch/08040969f14b/silver_checks/spark_run_01/good/silver/silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_orders",
+      "removed_duplicates": 0,
+      "rows": 12000,
+      "schema": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "order_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "customer_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "order_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "status",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "shipping_city",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "coupon_code",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "total_amount",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "_source_file",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_dataset_version",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_pipeline_run_id",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_ingested_at",
+            "nullable": true,
+            "type": "timestamp"
+          }
+        ],
+        "type": "struct"
+      }
+    },
+    "stg_payments": {
+      "columns": [
+        "payment_id",
+        "order_id",
+        "attempt_no",
+        "payment_ts",
+        "method",
+        "provider",
+        "amount",
+        "status",
+        "failure_reason",
+        "_source_file",
+        "_dataset_version",
+        "_pipeline_run_id",
+        "_ingested_at"
+      ],
+      "input_rows": 13523,
+      "path": "file:///workspace/scratch/08040969f14b/silver_checks/spark_run_01/good/silver/silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_payments",
+      "removed_duplicates": 0,
+      "rows": 13523,
+      "schema": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "payment_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "order_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "attempt_no",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "payment_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "method",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "provider",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "amount",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "status",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "failure_reason",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_source_file",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_dataset_version",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_pipeline_run_id",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_ingested_at",
+            "nullable": true,
+            "type": "timestamp"
+          }
+        ],
+        "type": "struct"
+      }
+    },
+    "stg_products": {
+      "columns": [
+        "product_id",
+        "product_name",
+        "category",
+        "brand",
+        "base_price",
+        "is_active",
+        "created_ts",
+        "description",
+        "_source_file",
+        "_dataset_version",
+        "_pipeline_run_id",
+        "_ingested_at"
+      ],
+      "input_rows": 1000,
+      "path": "file:///workspace/scratch/08040969f14b/silver_checks/spark_run_01/good/silver/silver_test/_runs/20261021T160823Z-85319e4fb94b/tables/stg_products",
+      "removed_duplicates": 0,
+      "rows": 1000,
+      "schema": {
+        "fields": [
+          {
+            "metadata": {},
+            "name": "product_id",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "product_name",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "category",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "brand",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "base_price",
+            "nullable": true,
+            "type": "long"
+          },
+          {
+            "metadata": {},
+            "name": "is_active",
+            "nullable": true,
+            "type": "boolean"
+          },
+          {
+            "metadata": {},
+            "name": "created_ts",
+            "nullable": true,
+            "type": "timestamp"
+          },
+          {
+            "metadata": {},
+            "name": "description",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_source_file",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_dataset_version",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_pipeline_run_id",
+            "nullable": true,
+            "type": "string"
+          },
+          {
+            "metadata": {},
+            "name": "_ingested_at",
+            "nullable": true,
+            "type": "timestamp"
+          }
+        ],
+        "type": "struct"
+      }
+    }
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "passed": true,
+  "scope": "full_parquet_scan",
+  "config_fingerprint": "808b27567ae077c17b6f98382ffc6903a5bc73507ab76d2bdcf615fccfc84271",
+  "checks": {
+    "customers_row_count_matches_manifest": true,
+    "customers_unique_primary_key": true,
+    "customers_complete_id_domain": true,
+    "customer_changes_row_count_matches_manifest": true,
+    "customer_changes_unique_primary_key": true,
+    "products_row_count_matches_manifest": true,
+    "products_unique_primary_key": true,
+    "products_complete_id_domain": true,
+    "orders_row_count_matches_manifest": true,
+    "orders_unique_primary_key": true,
+    "orders_complete_id_domain": true,
+    "order_items_row_count_matches_manifest": true,
+    "payments_row_count_matches_manifest": true,
+    "payments_unique_primary_key": true,
+    "orders_customer_fk": true,
+    "changes_customer_fk": true,
+    "changes_valid_time": true,
+    "changes_known_values": true,
+    "changes_unique_effective_time": true,
+    "changes_initial_snapshot": true,
+    "changes_one_initial_per_customer": true,
+    "changes_actual_segment_update": true,
+    "items_order_fk": true,
+    "items_product_fk": true,
+    "payments_order_fk": true,
+    "item_arithmetic": true,
+    "customer_before_order": true,
+    "payment_amount": true,
+    "duplicate_business_fields_unchanged": true,
+    "duplicate_timestamps": true,
+    "payment_schema_boundary": true,
+    "payment_failure_reason_v2": true,
+    "shipping_city_matches_customer": true,
+    "changes_count_matches_rate": true,
+    "changes_within_observed_order_history": true,
+    "order_totals_after_deduplication": true,
+    "payment_status_consistency": true,
+    "shipping_distribution_matches_manifest": true,
+    "category_skew": true,
+    "duplicate_count_matches_rate": true,
+    "duplicate_count_matches_manifest": true
+  },
+  "failures": [],
+  "checksums_verified": true,
+  "physical_source_bytes": 981634,
+  "physical_source_gb": 0.000981634,
+  "rubric_100gb_met": false,
+  "rows": {
+    "customers": 2000,
+    "customer_changes": 2150,
+    "products": 1000,
+    "orders": 12000,
+    "order_items": 30591,
+    "payments": 13523
+  },
+  "cardinality": {
+    "customers.customer_id": {
+      "unique_values": 2000,
+      "rows": 2000,
+      "ratio": 1.0
+    },
+    "customer_changes.change_id": {
+      "unique_values": 2150,
+      "rows": 2150,
+      "ratio": 1.0
+    },
+    "products.product_id": {
+      "unique_values": 1000,
+      "rows": 1000,
+      "ratio": 1.0
+    },
+    "orders.order_id": {
+      "unique_values": 12000,
+      "rows": 12000,
+      "ratio": 1.0
+    },
+    "order_items.order_item_id": {
+      "unique_values": 29980,
+      "rows": 30591,
+      "ratio": 0.9800268052695237
+    },
+    "payments.payment_id": {
+      "unique_values": 13523,
+      "rows": 13523,
+      "ratio": 1.0
+    },
+    "orders.customer_id": {
+      "unique_values": 1938,
+      "rows": 12000,
+      "ratio": 0.1615
+    },
+    "order_items.product_id": {
+      "unique_values": 1000,
+      "rows": 30591,
+      "ratio": 0.03268935307770259
+    },
+    "payments.order_id": {
+      "unique_values": 12000,
+      "rows": 13523,
+      "ratio": 0.8873770613029653
+    }
+  },
+  "order_time_range": {
+    "start": "2024-12-31T19:00:00-05:00",
+    "end": "2024-12-31T22:19:59-05:00",
+    "span_days": 0.13887731481481483
+  },
+  "customer_history": {
+    "customers_with_updates": 100,
+    "update_rows": 150,
+    "initial_rows": 2000
+  },
+  "shipping_city_counts": {
+    "Ho Chi Minh": 9593,
+    "Ha Noi": 1133,
+    "Da Nang": 1274
+  },
+  "category_counts": {
+    "electronics": 750,
+    "fashion": 125,
+    "home": 125
+  },
+  "duplicate_extra_rows": 611,
+  "duplicate_fraction_of_final_rows": 0.019973194730476283,
+  "schema_versions": [
+    1,
+    2
+  ],
+  "duplicate_amount_effect_vnd": {
+    "raw_item_total": 483359824000,
+    "deduplicated_order_total": 474731499000,
+    "overcount": 8628325000,
+    "note": "Order value, not recognized revenue; cancelled/pending orders are included."
+  }
+}

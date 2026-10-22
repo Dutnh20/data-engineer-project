@@ -1,0 +1,47 @@
+{"committed_order_id": 100, "physical_gb": 3.6e-05}
+{"status": "complete", "orders": 800, "physical_gb": 0.000139672, "rubric_100gb_met": false}
+test_actual_byte_target (test_generator.GeneratorTests.test_actual_byte_target)
+The byte target is checked on files; more records are made when needed. ... {"committed_order_id": 100, "physical_gb": 3.6e-05}
+{"committed_order_id": 1000, "physical_gb": 0.000169}
+{"status": "complete", "orders": 1900, "physical_gb": 0.000303475, "rubric_100gb_met": false}
+ok
+test_config_change_refused_on_resume (test_generator.GeneratorTests.test_config_change_refused_on_resume)
+Prevent mixing data from different seeds inside one source run. ... ok
+test_customer_history_can_disable_updates (test_generator.GeneratorTests.test_customer_history_can_disable_updates)
+The zero-rate option still supplies exactly one initial row per customer. ... {"committed_order_id": 100, "physical_gb": 3.6e-05}
+{"status": "complete", "orders": 800, "physical_gb": 0.000139434, "rubric_100gb_met": false}
+ok
+test_customer_history_supports_temporal_join (test_generator.GeneratorTests.test_customer_history_supports_temporal_join)
+A point-in-time lookup returns the old segment before a change, new at it. ... ok
+test_detect_changed_file (test_generator.GeneratorTests.test_detect_changed_file)
+Independent integrity validation rejects a damaged source file. ... ok
+test_existing_output_not_overwritten (test_generator.GeneratorTests.test_existing_output_not_overwritten)
+A fresh run cannot silently replace an existing output. ... ok
+test_independent_business_validation (test_generator.GeneratorTests.test_independent_business_validation)
+Check FK domains, amounts, key cardinality and physical schema evolution. ... ok
+test_kafka_delivery_callbacks (test_generator.GeneratorTests.test_kafka_delivery_callbacks)
+A delivery report counts acknowledgements and preserves intentional repeats. ... ok
+test_kafka_delivery_error_not_silent (test_generator.GeneratorTests.test_kafka_delivery_error_not_silent)
+An asynchronous broker failure must fail the command and evidence report. ... ok
+test_ml_profile_has_long_history_without_wrapping (test_generator.GeneratorTests.test_ml_profile_has_long_history_without_wrapping)
+The ML profile spans >340 days, rather than only claiming a long horizon. ... ok
+test_resume_and_orphan_recovery (test_generator.GeneratorTests.test_resume_and_orphan_recovery)
+A resumed run regenerates an uncommitted file and matches uninterrupted bytes. ... {"committed_order_id": 100, "physical_gb": 3.6e-05}
+{"committed_order_id": 300, "physical_gb": 6.5e-05}
+{"status": "complete", "orders": 800, "physical_gb": 0.000139672, "rubric_100gb_met": false}
+ok
+test_stream_plan_reproducible (test_generator.GeneratorTests.test_stream_plan_reproducible)
+Planning the same source again yields identical scheduled messages. ... ok
+test_stream_relations_delays_duplicates (test_generator.GeneratorTests.test_stream_relations_delays_duplicates)
+Read payloads independently and compare callback IDs with stored payments. ... ok
+test_upload_prefix_conflict (test_generator.GeneratorTests.test_upload_prefix_conflict)
+Another source's completed MinIO prefix is not overwritten. ... ok
+test_upload_verification_idempotency_and_ready_marker (test_generator.GeneratorTests.test_upload_verification_idempotency_and_ready_marker)
+An upload publishes its marker last and skips verified files on repeat. ... ok
+test_wall_clock_keeps_source_timestamp (test_generator.GeneratorTests.test_wall_clock_keeps_source_timestamp)
+Clock rebasing preserves original business time and adds the exact offset. ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 1.238s
+
+OK

@@ -1,0 +1,49 @@
+{
+  "verified_on_utc_date": "2026-10-21",
+  "pipeline": "dp1_source_to_bronze",
+  "pipeline_version": "1.0.0",
+  "generator_version_unchanged": "1.1.0",
+  "python": "3.12.14",
+  "boto3": "1.40.52",
+  "pyarrow": "21.0.0",
+  "unit_tests": {
+    "command": "python -m unittest discover -s tests -v",
+    "passed": true,
+    "total": 29,
+    "existing_generator_tests": 16,
+    "new_pipeline_tests": 13,
+    "elapsed_seconds": 1.411,
+    "transport": "In-memory S3 fake with ETag and conditional PUT checks",
+    "coverage": [
+      "Exact byte copy keeps duplicates and both payment schemas",
+      "Rerun verifies without new data files",
+      "Missing ready marker blocks ingestion",
+      "Missing source file blocks ingestion before writing Bronze",
+      "Modified inventory checksum is rejected",
+      "Inventory cannot escape source path",
+      "A different source cannot reuse a bound Bronze version",
+      "Interrupted copy can resume",
+      "Real destination bytes are hashed even if metadata matches",
+      "Source changed between preflight and copy is rejected",
+      "Actual Parquet row count is checked",
+      "Actual Parquet physical schema is checked",
+      "Untracked file blocks success publication"
+    ]
+  },
+  "live_silo_attempt": {
+    "status": "blocked_before_server_start",
+    "release": "RELEASE.2026-10-18T00-00-00Z",
+    "linux_amd64_release_archive_sha256": "e069b6425f0de944fea6c301773d5620fe8992bf0d16b6c5e42be57d666ee794",
+    "release_archive_checksum_verified": true,
+    "error": "Unable to get IP addresses of this host: route ip+net: netlinkrib: operation not permitted",
+    "live_s3_requests_verified": false
+  },
+  "limitations": [
+    "No Docker daemon or user Windows execution was available",
+    "No successful live MinIO/Silo integration test in this environment",
+    "No 100 GB ingestion benchmark",
+    "No live multipart copy test",
+    "Single writer per dataset_version; no distributed lock",
+    "Raw Parquet Bronze only; not an Iceberg table or an Airflow DAG"
+  ]
+}

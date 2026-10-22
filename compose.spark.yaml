@@ -1,0 +1,81 @@
+# Overlay: docker compose -f compose.yaml -f compose.spark.yaml ...
+# The base file owns the existing storage service and network/project name.
+x-spark-common: &spark-common
+  image: edai-spark-lab:3.5.6
+  build:
+    context: .
+    dockerfile: infra/spark/Dockerfile
+  profiles: ["spark"]
+  environment: &spark-env
+    S3_ENDPOINT_URL: http://minio:9000
+    AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-labadmin}
+    AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-local_demo_change_this_2026}
+    AWS_EC2_METADATA_DISABLED: "true"
+    PYSPARK_PYTHON: python3
+    PYTHONPATH: /opt/app
+    SPARK_DAEMON_MEMORY: 512m
+  volumes:
+    - ./output:/data
+    - spark_events:/opt/spark/events
+
+services:
+  spark-master:
+    <<: *spark-common
+    hostname: spark-master
+    entrypoint: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.master.Master", "--host", "spark-master", "--port", "7077", "--webui-port", "8080"]
+    ports:
+      - "127.0.0.1:8090:8080"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/json/', timeout=3).read()"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  spark-worker:
+    <<: *spark-common
+    hostname: spark-worker
+    depends_on:
+      spark-master:
+        condition: service_healthy
+    entrypoint: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "--host", "spark-worker", "--webui-port", "8081", "--cores", "2", "--memory", "2g", "--work-dir", "/opt/spark/work", "spark://spark-master:7077"]
+    ports:
+      - "127.0.0.1:8091:8081"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8081/json/', timeout=3).read()"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  spark-history:
+    <<: *spark-common
+    environment:
+      <<: *spark-env
+      SPARK_HISTORY_OPTS: "-Dspark.history.fs.logDirectory=file:///opt/spark/events -Dspark.history.ui.port=18080"
+    entrypoint: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.history.HistoryServer"]
+    ports:
+      - "127.0.0.1:18081:18080"
+    restart: unless-stopped
+
+  spark-job:
+    <<: *spark-common
+    depends_on:
+      minio:
+        condition: service_started
+      spark-worker:
+        condition: service_healthy
+    environment:
+      <<: *spark-env
+      SPARK_MASTER_URL: spark://spark-master:7077
+      SPARK_DRIVER_HOST: edai-silver-job
+      SPARK_EVENTLOG_DIR: file:///opt/spark/events
+    entrypoint: ["/bin/bash", "/opt/app/run_job.sh"]
+    ports:
+      - "127.0.0.1:4041:4040"
+    restart: "no"
+
+volumes:
+  spark_events:

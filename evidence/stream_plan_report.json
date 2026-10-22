@@ -1,0 +1,32 @@
+{
+  "config_fingerprint": "808b27567ae077c17b6f98382ffc6903a5bc73507ab76d2bdcf615fccfc84271",
+  "source_orders": [
+    1,
+    2000
+  ],
+  "plan_sha256": "afce69ecfae490476f9a077e340f78a9043ec9d82ba33d4cfa4249ea8a6d49d0",
+  "delivery_count": 16344,
+  "original_events_by_topic": {
+    "edai.clickstream": 14042,
+    "edai.payment_callbacks": 2268
+  },
+  "extra_callback_copies": 34,
+  "callback_duplicate_fraction_of_final_rows": 0.014769765421372719,
+  "configured_callback_duplicate_fraction": 0.015,
+  "mobile_click_events": 10121,
+  "late_click_events": 1530,
+  "late_fraction_of_mobile_clicks": 0.15117083292164807,
+  "late_delay_ms_min_max": [
+    300213,
+    599960
+  ],
+  "out_of_order_relative_to_topic_max_event_ts": {
+    "edai.clickstream": 5968,
+    "edai.payment_callbacks": 329
+  },
+  "first_simulated_arrival_ts": "2024-12-31T23:58:06.087000+00:00",
+  "last_simulated_arrival_ts": "2025-01-01T00:42:20.185000+00:00",
+  "logical_duration_seconds": 2654.098,
+  "kafka_published": false,
+  "late_semantics": "Injected source delay 300-600s; replay retains historical event timestamps. This report does not claim a Flink watermark result."
+}
