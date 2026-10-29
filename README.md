@@ -19,6 +19,7 @@ DataHub, Feast và các nền tảng AI được triển khai ở những giai �
 ## Mục lục
 
 1. [Domain và luồng triển khai](#domain-và-luồng-triển-khai)
+   - [Sơ đồ triển khai toàn hệ thống](#sơ-đồ-triển-khai-toàn-hệ-thống)
 2. [Những gì mã nguồn thực hiện](#những-gì-mã-nguồn-thực-hiện)
 3. [Cấu trúc repo](#cấu-trúc-repo)
 4. [Chạy lần đầu trên Windows bằng Docker](#chạy-lần-đầu-trên-windows-bằng-docker)
@@ -46,6 +47,30 @@ flowchart TD
 Compose gốc có Generator, MinIO và Kafka; Spark được bổ sung bằng overlay riêng.
 Flink ở bước sau. File Parquet ban đầu được ghi ra `output/`, sau đó `upload`
 đưa chúng lên nguồn MinIO, DP1 tạo Bronze và Spark xử lý Silver.
+
+## Sơ đồ triển khai toàn hệ thống
+
+Mỗi khối là một deployable unit (container hoặc dịch vụ chạy riêng); mũi tên đi theo chiều dữ liệu.
+
+```mermaid
+flowchart LR
+    GEN["generator<br/>(container)"] -->|"Parquet nguồn: upload"| SRC[("MinIO<br/>source-department")]
+    GEN -->|"clickstream, callback JSON"| KAFKA["Kafka"]
+    SRC -->|"DP1 ingest"| BRZ[("MinIO bronze")]
+    BRZ -->|"DP2 Spark: stg_*"| SLV[("MinIO silver")]
+    SLV -->|"DP2 Spark: dim_ fact_ agg_"| GLD[("MinIO gold")]
+    GLD -->|"DP3 Spark: feat_"| GLD
+    KAFKA -->|"DP4 Spark Streaming"| SLV
+    KAFKA -->|"Flink SQL"| FLK["Flink<br/>(JobManager + TaskManager)"]
+    FLK --> OUT[("output/flink_out")]
+    GLD -->|"export CSV"| DW[("PostgreSQL<br/>warehouse")]
+    AF["Airflow<br/>(3 DAG pipeline + DP4)"] -.->|"điều phối qua Docker socket"| BRZ
+    AF -.-> SLV
+    AF -.-> GLD
+    SPK["Spark History Server"] -.->|"event log"| SLV
+```
+
+Airflow không chạy Spark trực tiếp: nó khởi động container `spark-job`/`generator` cho từng task. Spark chạy local mode trong container đó.
 
 ## Những gì mã nguồn thực hiện
 
@@ -91,6 +116,18 @@ Tỷ lệ thực tế có sai số làm tròn nhỏ do số bản sao phải là
 | `compose.addon.yaml` | Dùng lại MinIO/Kafka của stack `edai-foundation` trước đó |
 | `compose.spark.yaml` | Overlay thêm Spark cho stack độc lập `compose.yaml` |
 | `Dockerfile`, `Dockerfile.baseline` | Bản multi-stage và bản gốc để đo kích thước |
+| `pipelines/dp1_source_to_bronze.py` | DP1: nguồn MinIO → Bronze, kiểm SHA256/schema/số dòng |
+| `spark_jobs/dp2_bronze_to_silver.py`, `dp3_silver_to_gold.py` | DP2: Bronze → Silver (`stg_*`) → Gold (`dim_`, `fact_`, `agg_`) |
+| `spark_jobs/feat_customer_orders.py` | DP3: bảng `feat_customer_orders_90d` có `event_timestamp` + `created` |
+| `spark_jobs/dp4_stream_to_silver.py` | Kafka → Silver bằng Spark Structured Streaming (khử trùng, late) |
+| `spark_jobs/validate_zone.py` | Stage validate cho từng zone, dùng trong Airflow |
+| `spark_jobs/bench_offline.py` | Benchmark baseline và các mức tối ưu skew |
+| `spark_jobs/lakehouse_compact.py`, `export_warehouse.py` | Compaction/partition lakehouse; xuất Gold sang PostgreSQL |
+| `flink_jobs/` | Flink SQL baseline và tối ưu (late, dedup, window) |
+| `airflow/dags/` | 3 DAG pipeline (DP1, DP2, DP3) và DAG stream DP4 |
+| `warehouse_sql/` | Nạp, truy vấn và index PostgreSQL |
+| `scripts/` | Sinh tài liệu đặc tính dữ liệu, tổng hợp kết quả Flink |
+| `compose.airflow.yaml`, `compose.flink.yaml`, `compose.warehouse.yaml` | Overlay Airflow, Flink, PostgreSQL |
 
 ## Chạy lần đầu trên Windows bằng Docker
 
@@ -259,6 +296,15 @@ Kafka/MinIO đang hoạt động hoặc dữ liệu đã đạt 100GB.
 - [Chạy bộ lớn và tiếp tục khi gián đoạn](docs/large_data.md)
 - [Docker multi-stage và cách đo kích thước](docs/docker_optimization.md)
 - [Phạm vi kiểm thử](docs/validation_status.md)
+- [Đặc tính dữ liệu sau khi sinh (skew, cardinality, duplicate, schema)](docs/data_characteristics.md)
+- [Thiết kế schema, ERD và quy ước đặt tên](docs/schema_design.md)
+- [Spark: schema evolution, khử trùng và các vấn đề offline](docs/spark_offline_problems.md)
+- [Spark: baseline → tối ưu skew (Spark UI)](docs/spark_optimization.md)
+- [Orchestration: 3 pipeline trên Airflow](docs/pipeline_04_airflow.md)
+- [Streaming: Spark Structured Streaming](docs/pipeline_05_stream.md)
+- [Feature table `feat_`](docs/pipeline_06_features.md)
+- [Flink: late arrival, khử trùng, window](docs/pipeline_07_flink.md)
+- [Tối ưu lưu trữ: lakehouse và warehouse](docs/data_storage.md)
 - [Tài liệu kỹ thuật tham khảo](docs/sources.md)
 
 ## Lưu ý phiên bản 1.1

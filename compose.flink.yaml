@@ -1,0 +1,35 @@
+# Overlay: docker compose -f compose.yaml -f compose.flink.yaml up -d --wait kafka jobmanager taskmanager
+# Flink UI: http://localhost:8082. Kết quả job ghi vào ./output/flink_out (mount /data trong container).
+x-flink: &flink
+  image: edai-flink-lab:1.20.1
+  build:
+    context: .
+    dockerfile: infra/flink/Dockerfile
+  volumes:
+    - ./output:/data
+    - ./flink_jobs:/opt/flink/jobs:ro
+  depends_on:
+    kafka:
+      condition: service_healthy
+
+services:
+  jobmanager:
+    <<: *flink
+    command: jobmanager
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: jobmanager
+        parallelism.default: 1
+        state.backend: hashmap
+    ports:
+      - "127.0.0.1:8082:8081"
+  taskmanager:
+    <<: *flink
+    command: taskmanager
+    environment:
+      FLINK_PROPERTIES: |
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        taskmanager.memory.process.size: 1536m
+    depends_on:
+      - jobmanager

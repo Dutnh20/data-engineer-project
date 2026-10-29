@@ -159,7 +159,7 @@ erDiagram
 
 | Bảng | Grain | Mô tả |
 |------|-------|-------|
-| `dim_customer` | 1 hàng/khách hàng | Snapshot hiện tại (`is_current=True`) từ SCD2. Surrogate key giữ nguyên từ Silver. |
+| `dim_customer` | 1 hàng/phiên bản khách hàng | Toàn bộ lịch sử SCD2; mỗi khách có đúng một dòng `is_current=True`. Surrogate key giữ nguyên từ Silver. |
 | `dim_product` | 1 hàng/sản phẩm | Toàn bộ sản phẩm. Surrogate key = sha256(gold_version + product_id). |
 | `dim_date` | 1 hàng/ngày | Sinh tự động từ ngày min(order_ts) đến max(order_ts) + 30 ngày. Tên tháng/ngày tiếng Việt. |
 
@@ -256,7 +256,7 @@ python -m pytest tests_spark\test_gold.py -v --tb=short
 
 | Bảng | Số hàng kỳ vọng | Ghi chú |
 |------|-----------------|---------|
-| `dim_customer` | 100 | Bằng số khách hàng, chỉ lấy is_current=True |
+| `dim_customer` | ≥ 100 | Mọi phiên bản SCD2; 100 customer_id, mỗi id một dòng is_current=True |
 | `dim_product` | 100 | Bằng số sản phẩm |
 | `dim_date` | ~60–90 | Phụ thuộc khoảng thời gian order + 30 ngày buffer |
 | `fact_orders` | 800 | Bằng số đơn hàng |
@@ -305,7 +305,7 @@ gold/
 
 Pipeline thực hiện các kiểm tra sau theo thứ tự:
 
-1. **dim_customer**: SK không null, customer_id > 0, is_current = true, không trùng SK
+1. **dim_customer**: SK không null, customer_id > 0, không trùng SK, mỗi khách đúng một phiên bản is_current
 2. **dim_product**: Không trùng product_sk
 3. **fact_orders**: SK không null, amount > 0, FK customer_sk và date_sk không orphan, không trùng SK
 4. **fact_order_items**: SK không null, quantity > 0, line_amount > 0, FK order_sk và product_sk không orphan, không trùng SK

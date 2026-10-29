@@ -1,0 +1,10 @@
+﻿services:
+  spark-master:
+    entrypoint: ["/opt/spark/bin/spark-class"]
+    command: ["org.apache.spark.deploy.master.Master", "--host", "spark-master", "--port", "7077", "--webui-port", "8080"]
+  spark-worker:
+    entrypoint: ["/opt/spark/bin/spark-class"]
+    command: ["org.apache.spark.deploy.worker.Worker", "--host", "spark-worker", "--webui-port", "8081", "--cores", "2", "--memory", "2g", "--work-dir", "/opt/spark/work", "spark://spark-master:7077"]
+  spark-history:
+    entrypoint: ["/opt/spark/bin/spark-class"]
+    command: ["org.apache.spark.deploy.history.HistoryServer"]

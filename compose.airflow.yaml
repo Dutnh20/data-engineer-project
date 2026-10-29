@@ -1,0 +1,50 @@
+# Overlay: docker compose -f compose.yaml -f compose.airflow.yaml up -d airflow
+# Cần đặt HOST_OUTPUT_DIR = đường dẫn THẬT của thư mục output trên máy chủ (xem docs/pipeline_04_airflow.md).
+services:
+  airflow:
+    image: edai-airflow-lab:2.10.5
+    build:
+      context: .
+      dockerfile: infra/airflow/Dockerfile
+    profiles: ["airflow"]
+    depends_on:
+      minio:
+        condition: service_started
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "false"
+      AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "false"
+      EDAI_HOST_OUTPUT_DIR: ${HOST_OUTPUT_DIR:?Đặt HOST_OUTPUT_DIR, ví dụ D:/edai-synthetic-generator/output}
+      EDAI_DOCKER_NETWORK: edai-synthetic_default
+      EDAI_GENERATOR_IMAGE: edai-synthetic-generator:1.1.0
+      EDAI_SPARK_IMAGE: edai-spark-lab:3.5.6
+      # Connection MinIO dùng chung cho mọi DAG (Admin > Connections > edai_minio)
+      AIRFLOW_CONN_EDAI_MINIO: '{"conn_type":"generic","login":"${MINIO_ROOT_USER:-labadmin}","password":"${MINIO_ROOT_PASSWORD:-local_demo_change_this_2026}","extra":{"endpoint_url":"http://minio:9000"}}'
+      # Variables mặc định (Admin > Variables); mỗi lần Trigger có thể ghi đè bằng config
+      AIRFLOW_VAR_EDAI_SOURCE_PREFIX: synthetic/smoke
+      AIRFLOW_VAR_EDAI_BRONZE_VERSION: smoke_v1
+      AIRFLOW_VAR_EDAI_SILVER_VERSION: smoke_v1
+      AIRFLOW_VAR_EDAI_GOLD_VERSION: gold_v2
+      AIRFLOW_VAR_EDAI_FEAT_VERSION: feat_v1
+      AIRFLOW_VAR_EDAI_FEAT_WINDOW_DAYS: "90"
+      AIRFLOW_VAR_EDAI_FEAT_SNAPSHOTS: "1"
+      AIRFLOW_VAR_EDAI_STREAM_VERSION: stream_v1
+      AIRFLOW_VAR_EDAI_TOPIC_PREFIX: edai
+      AIRFLOW_VAR_EDAI_KAFKA_BOOTSTRAP: kafka:9092
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        airflow db migrate &&
+        airflow users create --username admin --password admin --firstname Lab --lastname Admin --role Admin --email admin@example.com || true
+        airflow scheduler &
+        exec airflow webserver --port 8080
+    ports:
+      - "127.0.0.1:8085:8080"
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - /var/run/docker.sock:/var/run/docker.sock
+      - airflow_home:/opt/airflow
+    restart: unless-stopped
+
+volumes:
+  airflow_home:

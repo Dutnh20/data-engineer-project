@@ -53,7 +53,7 @@ def gold_dq_rules_dim_customer():
     return [
         ("dim_customer_sk_not_null", "customer_sk IS NOT NULL"),
         ("dim_customer_id_positive", "customer_id > 0"),
-        ("dim_customer_is_current", "is_current = true"),
+        ("dim_customer_is_current_not_null", "is_current IS NOT NULL"),
     ]
 
 

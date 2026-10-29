@@ -71,6 +71,30 @@ services:
       start_period: 30s
     restart: unless-stopped
 
+  spark-master:
+    image: apache/spark:3.5.6
+    command:
+      - /opt/spark/bin/spark-class
+      - org.apache.spark.deploy.master.Master
+    ports:
+      - "127.0.0.1:8081:8080"
+      - "127.0.0.1:7077:7077"
+    volumes:
+      - ./spark-apps:/opt/spark-apps
+    restart: unless-stopped
+
+  spark-worker:
+    image: apache/spark:3.5.6
+    command:
+      - /opt/spark/bin/spark-class
+      - org.apache.spark.deploy.worker.Worker
+      - spark://spark-master:7077
+    depends_on:
+      - spark-master
+    volumes:
+      - ./spark-apps:/opt/spark-apps
+    restart: unless-stopped
+
 volumes:
   minio_data:
   kafka_data:

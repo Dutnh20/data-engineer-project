@@ -205,15 +205,18 @@ class GoldTests(unittest.TestCase):
         self.assertEqual(self.gold_result["status"], "published")
 
     def test_dim_customer_unique_and_complete(self):
-        """dim_customer phải có đúng 100 khách hàng (is_current=True) với customer_sk duy nhất."""
+        """dim_customer giữ mọi phiên bản SCD2: đủ khách hàng, mỗi khách đúng một bản is_current."""
         rows = self.read_table_rows("dim_customer")
         n_customers = self.manifest["tables"]["customers"]["rows"]
-        self.assertEqual(len(rows), n_customers,
-                         f"dim_customer: kỳ vọng {n_customers}, thực tế {len(rows)}")
+        self.assertGreaterEqual(len(rows), n_customers)
+        self.assertEqual(len({r["customer_id"] for r in rows}), n_customers,
+                         "dim_customer thiếu hoặc thừa khách hàng")
         sks = [r["customer_sk"] for r in rows]
         self.assertEqual(len(sks), len(set(sks)), "dim_customer có customer_sk trùng lặp")
-        # Tất cả phải is_current=True
-        self.assertTrue(all(r["is_current"] for r in rows), "dim_customer có hàng is_current=False")
+        current = {}
+        for r in rows:
+            current[r["customer_id"]] = current.get(r["customer_id"], 0) + int(bool(r["is_current"]))
+        self.assertTrue(all(n == 1 for n in current.values()), "Có khách không có đúng một bản is_current")
 
     def test_dim_product_unique(self):
         """dim_product phải có đủ sản phẩm với product_sk duy nhất."""

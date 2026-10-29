@@ -1,0 +1,139 @@
+diff --git a/docs/pipeline_03_gold.md b/docs/pipeline_03_gold.md
+index d34a7f7..d309bc2 100644
+--- a/docs/pipeline_03_gold.md
++++ b/docs/pipeline_03_gold.md
+@@ -159,7 +159,7 @@ erDiagram
+ 
+ | Bảng | Grain | Mô tả |
+ |------|-------|-------|
+-| `dim_customer` | 1 hàng/khách hàng | Snapshot hiện tại (`is_current=True`) từ SCD2. Surrogate key giữ nguyên từ Silver. |
++| `dim_customer` | 1 hàng/phiên bản khách hàng | Toàn bộ lịch sử SCD2; mỗi khách có đúng một dòng `is_current=True`. Surrogate key giữ nguyên từ Silver. |
+ | `dim_product` | 1 hàng/sản phẩm | Toàn bộ sản phẩm. Surrogate key = sha256(gold_version + product_id). |
+ | `dim_date` | 1 hàng/ngày | Sinh tự động từ ngày min(order_ts) đến max(order_ts) + 30 ngày. Tên tháng/ngày tiếng Việt. |
+ 
+@@ -256,7 +256,7 @@ python -m pytest tests_spark\test_gold.py -v --tb=short
+ 
+ | Bảng | Số hàng kỳ vọng | Ghi chú |
+ |------|-----------------|---------|
+-| `dim_customer` | 100 | Bằng số khách hàng, chỉ lấy is_current=True |
++| `dim_customer` | ≥ 100 | Mọi phiên bản SCD2; 100 customer_id, mỗi id một dòng is_current=True |
+ | `dim_product` | 100 | Bằng số sản phẩm |
+ | `dim_date` | ~60–90 | Phụ thuộc khoảng thời gian order + 30 ngày buffer |
+ | `fact_orders` | 800 | Bằng số đơn hàng |
+@@ -305,7 +305,7 @@ gold/
+ 
+ Pipeline thực hiện các kiểm tra sau theo thứ tự:
+ 
+-1. **dim_customer**: SK không null, customer_id > 0, is_current = true, không trùng SK
++1. **dim_customer**: SK không null, customer_id > 0, không trùng SK, mỗi khách đúng một phiên bản is_current
+ 2. **dim_product**: Không trùng product_sk
+ 3. **fact_orders**: SK không null, amount > 0, FK customer_sk và date_sk không orphan, không trùng SK
+ 4. **fact_order_items**: SK không null, quantity > 0, line_amount > 0, FK order_sk và product_sk không orphan, không trùng SK
+diff --git a/spark_jobs/gold_contracts.py b/spark_jobs/gold_contracts.py
+index eba9c11..52cdd6b 100644
+--- a/spark_jobs/gold_contracts.py
++++ b/spark_jobs/gold_contracts.py
+@@ -53,7 +53,7 @@ def gold_dq_rules_dim_customer():
+     return [
+         ("dim_customer_sk_not_null", "customer_sk IS NOT NULL"),
+         ("dim_customer_id_positive", "customer_id > 0"),
+-        ("dim_customer_is_current", "is_current = true"),
++        ("dim_customer_is_current_not_null", "is_current IS NOT NULL"),
+     ]
+ 
+ 
+diff --git a/spark_jobs/gold_transforms.py b/spark_jobs/gold_transforms.py
+index eee8d5f..23a8464 100644
+--- a/spark_jobs/gold_transforms.py
++++ b/spark_jobs/gold_transforms.py
+@@ -71,14 +71,14 @@ class GoldQualityGate:
+ # ---------------------------------------------------------------------------
+ 
+ def build_dim_customer(history_df, gold_version, run_id, ingested_at):
+-    """Lấy snapshot hiện tại (is_current=True) của mỗi khách hàng từ SCD2.
++    """Giữ TOÀN BỘ phiên bản SCD2 của khách hàng (đúng nghĩa SCD Type 2).
+ 
+-    Kết hợp thông tin signup_ts từ bảng stg_customers nếu có, hoặc để NULL
+-    vì stg_customer_history không lưu signup_ts.
++    fact_orders gắn customer_sk của phiên bản có hiệu lực tại order_ts, nên dim phải
++    chứa cả phiên bản cũ; nếu chỉ giữ is_current=True thì đơn cũ thành orphan FK.
++    Mỗi customer_id có đúng một dòng is_current=True.
+     Surrogate key customer_sk được giữ nguyên từ Silver.
+     """
+     dim = (history_df
+-           .filter(F.col("is_current") == True)  # noqa: E712 – Spark cần ==
+            .select(
+                "customer_sk",
+                "customer_id",
+@@ -361,10 +361,13 @@ def build_agg_daily_sales(fact_orders_df, fact_items_df, dim_date_df, dim_produc
+ # ---------------------------------------------------------------------------
+ 
+ def build_agg_customer_ltv(fact_orders_df, dim_customer_df, gold_version, run_id, ingested_at):
+-    """Customer Lifetime Value: tổng hợp theo khách hàng hiện tại."""
+-    # Tính từ fact_orders
+-    orders_agg = (fact_orders_df
+-                  .groupBy("customer_sk")
++    """Customer Lifetime Value: một dòng mỗi khách hàng (customer_id), gộp mọi phiên bản SCD2."""
++    # fact_orders giữ customer_sk theo phiên bản tại thời điểm đặt; map về customer_id để gộp.
++    orders_by_customer = fact_orders_df.join(
++        dim_customer_df.select("customer_sk", "customer_id"), "customer_sk", "left"
++    )
++    orders_agg = (orders_by_customer
++                  .groupBy("customer_id")
+                   .agg(
+                       F.min("order_ts").alias("first_order_ts"),
+                       F.max("order_ts").alias("last_order_ts"),
+@@ -376,9 +379,11 @@ def build_agg_customer_ltv(fact_orders_df, dim_customer_df, gold_version, run_id
+                       F.avg(F.when(F.col("is_completed"), F.col("total_amount").cast("double"))).alias("avg_order_value_vnd"),
+                   ))
+ 
+-    # Kết hợp với dim_customer để lấy thông tin khách
++    # Thông tin khách lấy từ phiên bản hiện tại
++    current = dim_customer_df.filter(F.col("is_current") == True).select(  # noqa: E712
++        "customer_sk", "customer_id", "city", "segment")
+     ltv = (orders_agg
+-           .join(dim_customer_df.select("customer_sk", "customer_id", "city", "segment"), "customer_sk", "left")
++           .join(current, "customer_id", "left")
+            .select(
+                "customer_sk",
+                "customer_id",
+@@ -465,6 +470,11 @@ def transform_gold(spark, silver_paths, gold_tables_root, quarantine_root,
+ 
+     gate.reject("dim_customer_duplicate_sk",
+                 dim_customer.groupBy("customer_sk").count().filter("count > 1").select("customer_sk"))
++    # SCD2: mỗi khách hàng phải có đúng một phiên bản hiện tại
++    gate.reject("dim_customer_one_current_per_customer",
++                dim_customer.groupBy("customer_id")
++                .agg(F.sum(F.col("is_current").cast("int")).alias("n_current"))
++                .filter("n_current != 1").select("customer_id"))
+ 
+     # ------------------------------------------------------------------
+     # dim_product
+diff --git a/tests_spark/test_gold.py b/tests_spark/test_gold.py
+index eeed959..77ec173 100644
+--- a/tests_spark/test_gold.py
++++ b/tests_spark/test_gold.py
+@@ -205,15 +205,18 @@ class GoldTests(unittest.TestCase):
+         self.assertEqual(self.gold_result["status"], "published")
+ 
+     def test_dim_customer_unique_and_complete(self):
+-        """dim_customer phải có đúng 100 khách hàng (is_current=True) với customer_sk duy nhất."""
++        """dim_customer giữ mọi phiên bản SCD2: đủ khách hàng, mỗi khách đúng một bản is_current."""
+         rows = self.read_table_rows("dim_customer")
+         n_customers = self.manifest["tables"]["customers"]["rows"]
+-        self.assertEqual(len(rows), n_customers,
+-                         f"dim_customer: kỳ vọng {n_customers}, thực tế {len(rows)}")
++        self.assertGreaterEqual(len(rows), n_customers)
++        self.assertEqual(len({r["customer_id"] for r in rows}), n_customers,
++                         "dim_customer thiếu hoặc thừa khách hàng")
+         sks = [r["customer_sk"] for r in rows]
+         self.assertEqual(len(sks), len(set(sks)), "dim_customer có customer_sk trùng lặp")
+-        # Tất cả phải is_current=True
+-        self.assertTrue(all(r["is_current"] for r in rows), "dim_customer có hàng is_current=False")
++        current = {}
++        for r in rows:
++            current[r["customer_id"]] = current.get(r["customer_id"], 0) + int(bool(r["is_current"]))
++        self.assertTrue(all(n == 1 for n in current.values()), "Có khách không có đúng một bản is_current")
+ 
+     def test_dim_product_unique(self):
+         """dim_product phải có đủ sản phẩm với product_sk duy nhất."""

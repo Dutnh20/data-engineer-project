@@ -1,0 +1,24 @@
+# Overlay: docker compose -f compose.yaml -f compose.warehouse.yaml up -d warehouse
+# PostgreSQL làm data warehouse để thử indexing. Cổng host 5433, tài khoản lab cục bộ.
+services:
+  warehouse:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: edai
+      POSTGRES_PASSWORD: local_demo_change_this_2026
+      POSTGRES_DB: edai_dw
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - warehouse_data:/var/lib/postgresql/data
+      - ./output/warehouse_csv:/csv:ro
+      - ./warehouse_sql:/sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edai -d edai_dw"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  warehouse_data:

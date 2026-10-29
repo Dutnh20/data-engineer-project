@@ -71,14 +71,14 @@ class GoldQualityGate:
 # ---------------------------------------------------------------------------
 
 def build_dim_customer(history_df, gold_version, run_id, ingested_at):
-    """Lấy snapshot hiện tại (is_current=True) của mỗi khách hàng từ SCD2.
+    """Giữ TOÀN BỘ phiên bản SCD2 của khách hàng (đúng nghĩa SCD Type 2).
 
-    Kết hợp thông tin signup_ts từ bảng stg_customers nếu có, hoặc để NULL
-    vì stg_customer_history không lưu signup_ts.
+    fact_orders gắn customer_sk của phiên bản có hiệu lực tại order_ts, nên dim phải
+    chứa cả phiên bản cũ; nếu chỉ giữ is_current=True thì đơn cũ thành orphan FK.
+    Mỗi customer_id có đúng một dòng is_current=True.
     Surrogate key customer_sk được giữ nguyên từ Silver.
     """
     dim = (history_df
-           .filter(F.col("is_current") == True)  # noqa: E712 – Spark cần ==
            .select(
                "customer_sk",
                "customer_id",
@@ -361,10 +361,13 @@ def build_agg_daily_sales(fact_orders_df, fact_items_df, dim_date_df, dim_produc
 # ---------------------------------------------------------------------------
 
 def build_agg_customer_ltv(fact_orders_df, dim_customer_df, gold_version, run_id, ingested_at):
-    """Customer Lifetime Value: tổng hợp theo khách hàng hiện tại."""
-    # Tính từ fact_orders
-    orders_agg = (fact_orders_df
-                  .groupBy("customer_sk")
+    """Customer Lifetime Value: một dòng mỗi khách hàng (customer_id), gộp mọi phiên bản SCD2."""
+    # fact_orders giữ customer_sk theo phiên bản tại thời điểm đặt; map về customer_id để gộp.
+    orders_by_customer = fact_orders_df.join(
+        dim_customer_df.select("customer_sk", "customer_id"), "customer_sk", "left"
+    )
+    orders_agg = (orders_by_customer
+                  .groupBy("customer_id")
                   .agg(
                       F.min("order_ts").alias("first_order_ts"),
                       F.max("order_ts").alias("last_order_ts"),
@@ -376,9 +379,11 @@ def build_agg_customer_ltv(fact_orders_df, dim_customer_df, gold_version, run_id
                       F.avg(F.when(F.col("is_completed"), F.col("total_amount").cast("double"))).alias("avg_order_value_vnd"),
                   ))
 
-    # Kết hợp với dim_customer để lấy thông tin khách
+    # Thông tin khách lấy từ phiên bản hiện tại
+    current = dim_customer_df.filter(F.col("is_current") == True).select(  # noqa: E712
+        "customer_sk", "customer_id", "city", "segment")
     ltv = (orders_agg
-           .join(dim_customer_df.select("customer_sk", "customer_id", "city", "segment"), "customer_sk", "left")
+           .join(current, "customer_id", "left")
            .select(
                "customer_sk",
                "customer_id",
@@ -465,6 +470,11 @@ def transform_gold(spark, silver_paths, gold_tables_root, quarantine_root,
 
     gate.reject("dim_customer_duplicate_sk",
                 dim_customer.groupBy("customer_sk").count().filter("count > 1").select("customer_sk"))
+    # SCD2: mỗi khách hàng phải có đúng một phiên bản hiện tại
+    gate.reject("dim_customer_one_current_per_customer",
+                dim_customer.groupBy("customer_id")
+                .agg(F.sum(F.col("is_current").cast("int")).alias("n_current"))
+                .filter("n_current != 1").select("customer_id"))
 
     # ------------------------------------------------------------------
     # dim_product
